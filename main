@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Relative Coordinate Practice Game</title>
+  <title>Relative Coordinate Game</title>
   <style>
     body {
       display: flex;
@@ -42,9 +42,9 @@
   </style>
 </head>
 <body>
-  <h1>Relative Coordinate Practice Game</h1>
+  <h1>Relative Coordinate Game</h1>
   <canvas id="gameCanvas" width="500" height="500"></canvas>
-  <div id="info">Click the location of: <span id="target"></span></div>
+  <div id="info">Click the Relative location of: <span id="target"></span></div>
   <div id="score">Score: 0</div>
 
   <script>
@@ -56,7 +56,10 @@
     let score = 0;
     let current = {x: 0, y: 0};
     let target = {x: 0, y: 0};
-    const range = 20;
+    let prevX = 0;
+    let prevY = 0;
+    const max = 10;
+    const range = 10;
     const step = canvas.width / (2 * range);
     const solvedPoints = [];
 
@@ -111,20 +114,34 @@
         drawPoint(p.x, p.y, 'purple');
       }
     }
-
+    function rng(M) {
+      const minCeiled = Math.ceil(-M);
+      const maxFloored = Math.floor(M);
+      return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+   }
+   
     function newTarget() {
       let dx, dy;
-      do {
-        dx = Math.floor(Math.random() * (20 - (-20) + 1)) + (-20)
-        dy = Math.floor(Math.random() * (20 - (-20) + 1)) + (-20);
-        target.x = current.x + dx;
-        target.y = current.y + dy;
-      } while (
-        (dx === 0 && dy === 0) ||
-        target.x < -range || target.x > range ||
-        target.y < -range || target.y > range
-      );
-      targetEl.textContent = `${dx >= -20 ? "+"+dx : dx}, ${dy >= -20 ? "+"+dy : dy}`;
+      if (true ) {
+        
+        dx = rng(max)+prevX;
+        dy = rng(max)+prevY;
+        
+        
+        if (dx > max || dx < -max || dy > max || dy < -max) {
+          while (dx > max || dx < -max || dy > max || dy < -max) {
+            dx= rng(max)+prevX;
+            dy= rng(max)+prevY;
+          }
+        }
+        target.x = dx;
+        target.y = dy;
+        
+
+      } 
+      targetEl.textContent = `${dx >= -20 ? ""+(dx-prevX) : (dx-prevX)}, ${dy >= -20 ? ""+(dy-prevY) : (dy-prevY)}`;
+      prevX = dx;
+      prevY = dy;
     }
 
     function canvasToCoords(x, y) {

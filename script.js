@@ -122,7 +122,7 @@
       } else {
         drawPoint(coords.x, coords.y, 'blue');
         drawPoint(target.x, target.y, 'red');
-        score -= 5;
+        score -= 15;
       }
 
       scoreEl.textContent = `Score: ${score}`;
